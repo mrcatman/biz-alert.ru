@@ -72,6 +72,26 @@
         <p><strong>Уже больше 270.000 человек с нами.</strong></p>
         <div style="text-align: center"><a target="_blank" style="text-decoration: none;" href="https://www.change.org/obnulenienalogov"><button class="sign-button" >Подписать на Change.org <img style="margin-left: 5px;" src="~assets/images/hand.png"/></button></a></div>
       </section>
+      <section class="business-word">
+        <div class="card-info">
+          <h1>Слово бизнесу</h1>
+        </div>
+        <carousel :autoplay="true" :autoplayTimeout="5000" :per-page="isMobile ? 1 : 2" :loop="true" :mouse-drag="false">
+          <slide class="business-word__card-container"  v-for="(item, $index) in businessWord" :key="$index">
+            <div class="card card-grey business-word__card">
+              <div class="business-word__card__name">{{item.name}}</div>
+              <div class="business-word__card__title">Адрес</div>
+              <div class="business-word__card__value">{{item.address}}</div>
+              <div class="business-word__card__title">Список проблем</div>
+              <div class="business-word__card__value">{{item.problems.join(', ')}}</div>
+              <div class="business-word__card__title">Количество рабочих мест под угрозой сокращения</div>
+              <div class="business-word__card__value">{{item.jobs_count}}</div>
+              <div class="business-word__card__title">Что случилось / Что может помочь</div>
+              <div class="business-word__card__value">{{item.description}}</div>
+            </div>
+          </slide>
+        </carousel>
+      </section>
       <section class="card jumbotron supporting">
         <div class="card-info" style="display: flex; align-items: center;">
           <h1>Нас поддержали</h1>
@@ -292,6 +312,7 @@
       return {
         expanded: null,
         placemarkData: [],
+        isMobile: typeof window !== 'undefined' && window.innerWidth < 768,
         rules: {
           email: [
             { required: true, message: 'Введите адрес электронной почты', trigger: 'blur' },
@@ -370,6 +391,9 @@
       this.fetchData()
     },
     computed: {
+      businessWord() {
+        return this.placemarkData.filter(item => item.show_on_main);
+      },
       businessCountAnimated: function() {
         return this.bcTween.toFixed(0);
       },
@@ -516,7 +540,7 @@
         });
       },
       async fetchData() {
-        let data = await fetch('/list')
+        let data = await fetch('http://89.223.24.211/list')
         let placemarkData = []
         if (data.ok) {
           placemarkData = await data.json();
@@ -892,4 +916,28 @@
       line-height: 1.5
       margin: 16px 0 0
       height: 136px
+  .business-word
+    width: 100%
+    .card-info h1
+      margin: 64px 16px 16px
+    &__card
+      flex-direction: column
+      align-items: flex-start
+      line-height: 1
+      padding: 16px 24px
+      height: 100%
+      width: calc(100% - 24px)
+      @include mobile
+        width: 100%
+      @include mobile
+        padding: 20px 24px
+      &__name
+        font-size: 24px
+        font-weight: bold
+        margin: 0 0 16px
+      &__title
+        font-weight: bold
+      &__value
+        line-height: 1.25
+        margin: 0 0 12px
 </style>

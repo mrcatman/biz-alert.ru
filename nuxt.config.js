@@ -50,7 +50,8 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '@/plugins/element-ui'
+    '@/plugins/element-ui',
+    {src: '~/plugins/carousel.js',  ssr: false }
   ],
   /*
   ** Nuxt.js dev-modules
@@ -72,28 +73,7 @@ export default {
            accurateTrackBounce:true,
         }
     ],
-    [
-      '@nuxtjs/firebase',
-      {
-        config: {
-          apiKey: "",
-          authDomain: "",
-          databaseURL: "",
-          projectId: "",
-          storageBucket: "",
-          messagingSenderId: "",
-          appId: ""
-        },
-        services:  {
-          auth: true,
-          firestore: {
-            static: false, // default
-            preload: false, // default
-            enablePersistence: true
-          }
-        }
-      }
-    ],
+
     ['vue-yandex-maps/nuxt', {
       apiKey: '',
       lang: 'ru_RU',
